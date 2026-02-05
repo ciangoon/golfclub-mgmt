@@ -80,3 +80,9 @@ Then open `http://localhost:3000`.
 - Register a member at `/register` and log in (creates a signed session cookie).
 - Log in as admin at `/admin/login` to create tee time slots.
 - Go to `/tee-sheet` to book; go to `/bookings` to cancel.
+
+
+## Vercel
+- For vercel demo, admin credentials are as follows
+- username: admin
+- password: adminpassword
