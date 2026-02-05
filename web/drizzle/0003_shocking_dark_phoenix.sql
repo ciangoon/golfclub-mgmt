@@ -1,0 +1,2 @@
+CREATE UNIQUE INDEX "tee_time_slots_course_starts_at_unique" ON "tee_time_slots" USING btree ("course","starts_at");--> statement-breakpoint
+ALTER TABLE "tee_time_slots" DROP COLUMN "duration_minutes";
