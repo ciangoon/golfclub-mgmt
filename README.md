@@ -1,12 +1,11 @@
-# Golf club booking demo (prototype)
+# Golf club management system
 
 Prototype platform for:
-- Demo member login (seeded accounts)
-- Tee sheet / tee time slot browsing
-- Booking/cancellation with capacity enforcement via `tee_time_spots`
-- Admin-managed tee time slots
+- Member **username + password** accounts (register + login)
+- Tee sheet browsing + booking/cancellation (capacity enforced via `tee_time_spots`)
+- Admin tee sheet generation (07:00–14:00 every 20 minutes)
 
-## Tech
+## Stack
 - Next.js (App Router) deployed to Vercel
 - Postgres (Neon or Supabase)
 - Drizzle ORM + Drizzle migrations
@@ -30,20 +29,46 @@ If you're using PowerShell instead of Git Bash:
 Copy-Item .env.example .env.local
 ```
 
-Set:
-- `DATABASE_URL` (Neon/Supabase Postgres connection string)
-- `SESSION_COOKIE_SECRET` (random string)
-- `DEMO_MODE=true` (enables demo seeding)
-- `ADMIN_USERNAME` (fixed admin username)
-- `ADMIN_PASSWORD` (fixed admin password)
+3. Create a free Postgres database on Neon and set `DATABASE_URL`.
 
-3. Run migrations:
+### Create a Neon account + database
+- Go to Neon and create a free account/project.
+- In the Neon dashboard, open your project and find **Connection details**.
+- Copy the **connection string** (it starts with `postgresql://...`).
+- Paste it into `DATABASE_URL` in `.env.local`.
+
+Notes:
+- Use a URL that includes `sslmode=require`.
+- If Neon shows both a **pooled** URL (often includes `-pooler`) and a **direct** URL, either works for this prototype.
+
+4. Generate secrets and set env vars.
+
+#### Generate a random string (Git Bash)
+
+```bash
+openssl rand -base64 32
+```
+
+If `openssl` isn’t available, use Node:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+Set these in `.env.local`:
+- `DATABASE_URL` (Neon Postgres connection string)
+- `SESSION_COOKIE_SECRET` (random string)
+- `ADMIN_USERNAME` (choose a admin username)
+- `ADMIN_PASSWORD` (choose a admin password)
+- `DEMO_MODE=true` (optional)
+
+5. Run migrations:
 
 ```bash
 npm run db:migrate
 ```
 
-4. Start dev server:
+6. Start dev server:
 
 ```bash
 npm run dev
@@ -68,6 +93,3 @@ This repository is a monorepo-style layout; the Next.js app lives in this `web/`
   - `ADMIN_PASSWORD`
 - Apply migrations once (run locally against the hosted DB):
 
-```bash
-npm run db:migrate
-```
